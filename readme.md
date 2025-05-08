@@ -1,32 +1,78 @@
-Book Manager Website
+# LibraSphere – Smart Library Management System
 
-A web application for managing books, users, and borrowing records built with Flask, SQLAlchemy, and MySQL. The application features role-based access control with different user roles like Super Admin, Admin, and User.
+LibraSphere is a web-based library management system built using Flask and MySQL. It supports role-based access control (RBAC) with three types of users: Super Admin, Admin, and User. Each role comes with its own set of permissions to manage books, users, and borrowing records.
 
-Features
+## Features
 
-- Super Admin: Manage Admin and User accounts, as well as manage books.
-- Admin: Manage books and see user data.
-- User: View available books and borrow them.
-- User Registration: Users can sign up and manage their own profiles.
-- Role-based Access Control (RBAC): Different permissions for different user roles.
-- Book Borrowing: Users can borrow books, with tracking for borrow and return dates.
-- Admin & User Management: Admins can manage users, and Super Admins can manage all users and admins.
+LibraSphere allows Super Admins to manage both Admin and User accounts, as well as the book inventory. Admins can manage books and view user data, while regular Users can browse available books and borrow them. The system includes secure registration and login, user profile management, and real-time book borrowing with return tracking. An admin dashboard is also integrated using Flask-Admin for convenient backend management.
 
-Technologies Used
+## Tech Stack
 
-- Flask: Web framework used to build the application.
-- SQLAlchemy: ORM for database interactions.
-- Flask-SQLAlchemy: Flask integration for SQLAlchemy.
-- Flask-Migrate: Database migrations.
-- PyMySQL: MySQL database connector.
-- Flask-Login: User session management.
-- Flask-Bcrypt: Password hashing and verification.
-- Jinja2: Template engine for dynamic HTML rendering.
-- python-dotenv: Environment variable management.
-- Flask-Admin: Admin interface for managing users and books.
+- Python (Flask)
+- SQLAlchemy (ORM)
+- MySQL (via PyMySQL)
+- Flask-Login (Authentication)
+- Flask-Bcrypt (Password hashing)
+- Flask-Admin (Admin dashboard)
+- HTML, CSS, Jinja2 (Frontend templating)
+- Flask-Migrate (Database migrations)
+- python-dotenv (Environment configuration)
 
-Prerequisites
+## Getting Started
 
-- Python 3.8 or above
-- MySQL or MariaDB database
-- Virtual environment (optional but recommended)
+### Prerequisites
+
+- Python 3.8 or higher
+- MySQL or MariaDB installed
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ap-bhattacharya/LibraSphere.git
+   cd LibraSphere
+   ```
+
+2. (Optional) Create and activate a virtual environment:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate   # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Create a `.env` file in the root directory and add your configuration:
+
+   ```
+   FLASK_APP=run.py
+   FLASK_ENV=development
+   SECRET_KEY=your_secret_key
+   SQLALCHEMY_DATABASE_URI=mysql+pymysql://username:password@localhost/database_name
+   ```
+
+5. Initialize the database:
+
+   ```bash
+   flask db init
+   flask db migrate -m "Initial migration"
+   flask db upgrade
+   ```
+
+6. Run the application:
+
+   ```bash
+   flask run
+   ```
+
+## License
+
+This project is licensed under the MIT License.
+
+## Repository
+
+GitHub: [https://github.com/ap-bhattacharya/LibraSphere](https://github.com/ap-bhattacharya/LibraSphere)
