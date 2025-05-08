@@ -1,0 +1,79 @@
+Test Cases for the Book Manager
+
+1. User Login Test Cases
+- Test Case 1:
+  - Description: Verify login functionality with valid credentials.
+  - Steps:
+    1. Navigate to the login page.
+    2. Enter valid username and password.
+    3. Click on "Login" button.
+  - Expected Result: User is redirected to the dashboard with a welcome message.
+  
+- Test Case 2:
+  - Description: Verify login functionality with invalid credentials.
+  - Steps:
+    1. Navigate to the login page.
+    2. Enter invalid username or password.
+    3. Click on "Login" button.
+  - Expected Result: User is shown an error message and remains on the login page.
+
+2. User Creation Test Cases (Super Admin)
+- Test Case 3:
+  - Description: Verify that Super Admin can create a new Admin user.
+  - Steps:
+    1. Login as Super Admin.
+    2. Navigate to "Manage Users".
+    3. Fill in the user creation form with a unique username, password, role "Admin", and name.
+    4. Click "Create User".
+  - Expected Result: New Admin user is created and appears in the user list.
+
+- Test Case 4:
+  - Description: Verify that creating a user with an existing username fails.
+  - Steps:
+    1. Login as Super Admin.
+    2. Navigate to "Manage Users".
+    3. Fill in the user creation form with an existing username.
+    4. Click "Create User".
+  - Expected Result: User creation fails, and an error message is displayed.
+
+3. Role-Based Access Control Test Cases
+- Test Case 5:
+  - Description: Verify that Admin users cannot manage other users.
+  - Steps:
+    1. Login as Admin.
+    2. Try to access "Manage Users" page.
+  - Expected Result: Access is denied, or the option is not visible.
+
+- Test Case 6:
+  - Description: Verify that Users cannot add or modify books.
+  - Steps:
+    1. Login as a regular User.
+    2. Try to access "Add Book" or "Edit Book" functionality.
+  - Expected Result: Access is denied, or options are not visible.
+
+4. CRUD Operations for Books
+- Test Case 7:
+  - Description: Verify that an Admin can add a new book.
+  - Steps:
+    1. Login as Admin.
+    2. Navigate to "Manage Books".
+    3. Fill in the book form with title, author, publication year, and genre.
+    4. Click "Add Book".
+  - Expected Result: New book is added and appears in the list.
+
+- Test Case 8:
+  - Description: Verify that Admins or Super Admins can delete a book.
+  - Steps:
+    1. Login as Admin or Super Admin.
+    2. Navigate to "Manage Books".
+    3. Select a book and click "Delete".
+  - Expected Result: Book is deleted.
+
+5. Validation Test Cases
+- Test Case 9:
+  - Description: Verify that a new book cannot be added with a duplicate title.
+  - Steps:
+    1. Login as Admin.
+    2. Navigate to "Manage Books".
+    3. Try to add a book with an existing title.
+  - Expected Result: An error message is displayed.

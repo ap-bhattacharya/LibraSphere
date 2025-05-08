@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="text-2xl font-semibold text-blue-600 mb-4">Borrowed Books</h2>
+
+<table class="w-full bg-white rounded-lg shadow-md">
+    <thead class="bg-blue-600 text-white">
+        <tr>
+            <th class="p-4">Cover</th>
+            <th class="p-4">Title</th>
+            <th class="p-4">Borrowed By</th>
+            <th class="p-4">Borrow Date</th>
+            <th class="p-4">Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for borrowed_book in borrowed_books %}
+        <tr class="border-b hover:bg-gray-100 transition duration-200">
+            <!-- Cover Image Column -->
+            <td class="p-4">
+                {% if borrowed_book.associated_book.cover_image %}
+                <img src="{{ url_for('book.get_cover_image', title=borrowed_book.book_title) }}" alt="Book Cover" class="cover-image">
+                {% else %}
+                <div class="cover-placeholder">Cover Image</div>
+                {% endif %}
+            </td>
+            <!-- Other Columns -->
+            <td class="p-4">{{ borrowed_book.book_title }}</td>
+            <td class="p-4">{{ borrowed_book.borrowed_by_user }}</td>
+            <td class="p-4">{{ borrowed_book.borrow_date }}</td>
+            <td class="p-4">{{ borrowed_book.return_date or 'Not Returned Yet' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        text-align: center; /* Center content horizontally */
+        vertical-align: middle; /* Center content vertically */
+        padding: 10px;
+    }
+    th {
+        font-weight: bold;
+    }
+    .cover-placeholder {
+        background-color: #e5e7eb; /* Tailwind gray-200 */
+        color: #6b7280; /* Tailwind gray-500 */
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 135px; /* 6:9 aspect ratio */
+        width: 90px;  /* 6:9 aspect ratio */
+        border-radius: 5px;
+    }
+    img.cover-image {
+        height: 135px; /* 6:9 aspect ratio */
+        width: 90px;  /* 6:9 aspect ratio */
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
+
+{% endblock %}

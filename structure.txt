@@ -1,0 +1,30 @@
+book-manager/
+│
+├── app/
+│   ├── __init__.py              # Initialize the Flask app and database
+│   ├── controllers/             
+│   │   ├── __init__.py
+│   │   ├── user_controller.py   # Handles user management actions
+│   │   ├── book_controller.py   # Handles book management actions
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py              # User model for interacting with the 'users' table
+│   │   ├── book.py              # Book model for interacting with the 'books' table
+│   │   └── borrowed_books.py    # BorrowedBooks model for managing borrowed books
+│   ├── templates/               # HTML templates
+│   │   ├── base.html            # Base template for other pages
+│   │   ├── login.html           # Login page
+│   │   ├── signup.html          # Signup page
+│   │   ├── dashboard.html       # User dashboard page
+│   │   ├── manage_books.html    # Manage books page (CRUD)
+│   │   ├── manage_users.html    # Manage users page (CRUD for Admin/Super Admin)
+│   │   ├── edit_user.html       # Edit user page
+│   │   └── add_user.html        # Add user page (Super Admin only)
+│   ├── static/                  # Static files (CSS, JS, images)
+│   │   └── styles.css           # Application styles
+│   └── __init__.py              # Initialize the app (app factory)
+├── .env                         # Environment variables (for DB credentials, etc.)
+├── database.sql                 # SQL script to create tables and insert sample data
+├── requirements.txt             # List of Python dependencies
+├── run.py                       # Entry point to run the application
+└── README.md                    # Project description

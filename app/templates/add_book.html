@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md mb-6 max-w-3xl mx-auto">
+    <h2 class="text-2xl font-semibold text-blue-600 mb-4">Add Book</h2>
+    <form id="add-book-form" method="POST" enctype="multipart/form-data" class="space-y-4">
+        <!-- Title Field -->
+        <div>
+            <label for="title" class="block text-gray-700 font-semibold">Title</label>
+            <input 
+                type="text" 
+                id="title" 
+                name="title" 
+                value="{{ request.form.get('title', '') }}" 
+                class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                required>
+            {% if 'title_error' in session %}
+            <p class="text-red-500 text-sm">{{ session.pop('title_error') }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Author Field -->
+        <div>
+            <label for="author" class="block text-gray-700 font-semibold">Author</label>
+            <input 
+                type="text" 
+                id="author" 
+                name="author" 
+                value="{{ request.form.get('author', '') }}" 
+                class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                required>
+            {% if 'author_error' in session %}
+            <p class="text-red-500 text-sm">{{ session.pop('author_error') }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Publication Year Field -->
+        <div>
+            <label for="year" class="block text-gray-700 font-semibold">Publication Year</label>
+            <input 
+                type="number" 
+                id="year" 
+                name="year" 
+                value="{{ request.form.get('year', '') }}" 
+                class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                required>
+            {% if 'year_error' in session %}
+            <p class="text-red-500 text-sm">{{ session.pop('year_error') }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Genre Field -->
+        <div>
+            <label for="genre" class="block text-gray-700 font-semibold">Genre</label>
+            <input 
+                type="text" 
+                id="genre" 
+                name="genre" 
+                value="{{ request.form.get('genre', '') }}" 
+                class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                required>
+            {% if 'genre_error' in session %}
+            <p class="text-red-500 text-sm">{{ session.pop('genre_error') }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Cover Image Field -->
+        <div>
+            <label for="cover_image" class="block text-gray-700 font-semibold">Cover Image</label>
+            <input 
+                type="file" 
+                id="cover_image" 
+                name="cover_image" 
+                accept="image/*"
+                class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <p class="text-gray-500 text-sm">Optional: Upload an image file for the book cover.</p>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button 
+                type="submit" 
+                class="w-full md:w-1/2 bg-green-500 hover:bg-green-600 text-white py-3 rounded font-bold transition duration-300 ease-in-out">
+                Add Book
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

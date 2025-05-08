@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md mb-6 max-w-5xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-blue-600">Manage Users</h2>
+        <a href="{{ url_for('user.add_user') }}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded font-bold transition duration-300">
+            Add User
+        </a>
+    </div>
+
+    <!-- Users Table -->
+    <table class="w-full bg-white rounded-lg shadow-md">
+        <thead class="bg-blue-600 text-white">
+            <tr>
+                <th class="p-4">Name</th>
+                <th class="p-4">Username</th>
+                <th class="p-4">Role</th>
+                <th class="p-4">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr class="border-b hover:bg-gray-100 transition duration-200">
+                <td class="p-4">{{ user.name }}</td>
+                <td class="p-4">{{ user.username }}</td>
+                <td class="p-4">{{ user.role }}</td>
+                <td class="p-4">
+                    {% if user.username != 'superadmin' %}
+                    <form action="{{ url_for('user.delete_user', id=user.id) }}" method="post" class="inline-block">
+                        <button type="submit" 
+                                class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+                            Delete
+                        </button>
+                    </form>
+                    <a href="{{ url_for('user.edit_user', id=user.id) }}" 
+                       class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+                       Edit
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        text-align: center; /* Horizontal centering */
+        vertical-align: middle; /* Vertical centering */
+        padding: 10px; /* Add padding for spacing */
+    }
+    th {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}

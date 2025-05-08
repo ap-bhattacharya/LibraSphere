@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-semibold text-blue-600">Manage Books</h2>
+        <div class="space-x-2">
+            {% if role == 'User' %}
+            <a href="{{ url_for('book.user_borrowed_books') }}" 
+               class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded font-bold transition duration-300">
+                View Borrowed Books
+            </a>
+            {% endif %}
+            {% if role in ['Admin', 'Super Admin'] %}
+            <a href="{{ url_for('book.add_book') }}" 
+               class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded font-bold transition duration-300">
+                Add Book
+            </a>
+            {% endif %}
+            {% if role == 'Super Admin' %}
+            <a href="{{ url_for('book.deleted_books') }}" 
+               class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded font-bold transition duration-300">
+                Deleted Books
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        text-align: center; /* Horizontal centering */
+        vertical-align: middle; /* Vertical centering */
+        padding: 10px; /* Add padding for spacing */
+    }
+    th {
+        font-weight: bold;
+    }
+    .cover-placeholder {
+        background-color: #e5e7eb; /* Tailwind gray-200 */
+        color: #6b7280; /* Tailwind gray-500 */
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 135px; /* 6:9 aspect ratio */
+        width: 90px;  /* 6:9 aspect ratio */
+        border-radius: 5px;
+    }
+    img.cover-image {
+        height: 135px; /* 6:9 aspect ratio */
+        width: 90px;  /* 6:9 aspect ratio */
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
+
+<!-- Search Form -->
+<form method="GET" action="{{ url_for('book.manage_books') }}" class="mb-6">
+    <div class="flex items-center space-x-4">
+        <input type="text" name="search_query" placeholder="Search books by title, author, year, or genre"
+               value="{{ request.args.get('search_query', '') }}"
+               class="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded transition duration-300 ease-in-out">Search</button>
+    </div>
+</form>
+
+<!-- Books Table -->
+<table class="w-full bg-white rounded-lg shadow-md">
+    <thead class="bg-blue-600 text-white">
+        <tr>
+            <th class="p-4">Cover</th>
+            <th class="p-4">Title</th>
+            <th class="p-4">Author</th>
+            <th class="p-4">Year</th>
+            <th class="p-4">Genre</th>
+            {% if role in ["Admin", "Super Admin"] %}
+                <th class="p-4">Actions</th>
+                <th class="p-4">Borrowed By</th>
+            {% endif %}
+            {% if role == "User" %}
+                <th class="p-4">Borrow</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr class="border-b hover:bg-gray-100 transition duration-200">
+            <!-- Cover Image Column -->
+            <td class="p-4">
+                {% if book.cover_image %}
+                <img src="{{ url_for('book.get_cover_image', title=book.title) }}" alt="Book Cover" class="cover-image">
+                {% else %}
+                <div class="cover-placeholder">Cover Image</div>
+                {% endif %}
+            </td>
+            <!-- Other Columns -->
+            <td class="p-4">{{ book.title }}</td>
+            <td class="p-4">{{ book.author }}</td>
+            <td class="p-4">{{ book.publication_year }}</td>
+            <td class="p-4">{{ book.genre }}</td>
+            {% if role in ["Admin", "Super Admin"] %}
+            <td class="p-4">
+                <a href="{{ url_for('book.update_book', title=book.title) }}" 
+                   class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+                   Edit
+                </a>
+                <form action="{{ url_for('book.delete_book', title=book.title) }}" method="post" class="inline-block">
+                    <button type="submit" 
+                            class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+                        Delete
+                    </button>
+                </form>
+            </td>
+            <td class="p-4">
+                {% for borrowed in borrowed_books %}
+                    {% if borrowed.book_title == book.title and not borrowed.return_date %}
+                        Borrowed by {{ borrowed.borrowed_by_user }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            {% endif %}
+            {% if role == "User" %}
+            <td class="p-4">
+                {% if book.title not in borrowed_titles %}
+                <form action="{{ url_for('book.borrow_book', title=book.title) }}" method="post">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out">Borrow</button>
+                </form>
+                {% else %}
+                <span class="text-red-500">Not Available</span>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination Controls -->
+<div class="mt-6 flex justify-center space-x-4">
+    {% if pagination.has_prev %}
+    <a href="{{ url_for('book.manage_books', page=pagination.prev_num, search_query=request.args.get('search_query', '')) }}" 
+       class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Previous</a>
+    {% endif %}
+    {% if pagination.has_next %}
+    <a href="{{ url_for('book.manage_books', page=pagination.next_num, search_query=request.args.get('search_query', '')) }}" 
+       class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Next</a>
+    {% endif %}
+</div>
+
+{% endblock %}
